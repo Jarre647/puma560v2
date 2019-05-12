@@ -252,6 +252,18 @@ namespace puma560
             double s5 = Math.Sin(t5 * Math.PI / 180);
             double s6 = Math.Sin(t6 * Math.PI / 180);
 
+            //double c1 = Math.Cos(t1);
+            //double c2 = Math.Cos(t2);
+            //double c3 = Math.Cos(t3);
+            //double c4 = Math.Cos(t4);
+            //double c5 = Math.Cos(t5 );
+            //double c6 = Math.Cos(t6 );
+            //double s1 = Math.Sin(t1);
+            //double s2 = Math.Sin(t2);
+            //double s3 = Math.Sin(t3 );
+            //double s4 = Math.Sin(t4 );
+            //double s5 = Math.Sin(t5 );
+         //   double s6 = Math.Sin(t6 );
             double c23 = c2 * c3 - s2 * s3;
             double s23 = c2 * s3 + s2 * c3;
             double r11 = c1 * (c23 * (c4 * c5 * c6 - s4 * s5) - s23 * s5 * c5) + s1 * (s4 * c5 * c6 + c4 * s6);
