@@ -37,9 +37,9 @@ namespace puma560
             array1[5, 1] = 0;
             array1[5, 2] = 0;
             array1[5, 3] = 0;//tau6
-            array2[3, 0] = 10;
-            array2[3, 1] = 10;
-            array2[3, 2] = 10;
+            array2[3, 0] = 0;
+            array2[3, 1] = 0;
+            array2[3, 2] = 0;
             array2[3, 3] = 1;
             double a2 = array1[2, 1];//записывание значений как не изменяющихся 
             double a3 = array1[3, 1];
@@ -58,9 +58,9 @@ namespace puma560
                 double tau4 = array1[3, 3];
                 double tau5 = array1[4, 3];
                 double tau6 = array1[5, 3];
-                double px = array2[3, 0];
-                double py = array2[3, 1];
-                double pz = array2[3, 2];
+                double px = array2[0, 3];
+                double py = array2[1, 3];
+                double pz = array2[2, 3];
                 double r11 = array2[0, 0];
                 double r12 = array2[0, 1];
                 double r13 = array2[0, 2];
@@ -70,6 +70,7 @@ namespace puma560
                 double r31 = array2[2, 0];
                 double r32 = array2[2, 1];
                 double r33 = array2[2, 2];
+       
                 int switchcase = Convert.ToInt16(Console.ReadLine());
                 Console.Clear();
                 switch (switchcase)
@@ -207,7 +208,7 @@ namespace puma560
                             Console.WriteLine("вектор х  " + px);
                             Console.WriteLine("вектор y  " + py);
                             Console.WriteLine("вектор z  " + pz);
-                            xr1 = program.inverse(d3 /*d3*/, a2 /*a2*/, d4 /*d4*/, a3/*a3*/, px /*px*/, py /*py*/, pz /*pz*/, out xr2);
+                            xr1 = program.inverse(r11,r13, r21, r31, r23, r33, d3, a2, d4, a3, px, py, pz, out xr2);
                             Console.ReadKey();
                             break;
                         }
@@ -218,9 +219,9 @@ namespace puma560
                 array1[3, 3] = tau4;
                 array1[4, 3] = tau5;
                 array1[5, 3] = tau6;
-                array2[3, 0] = px;
-                array2[3, 1] = py;
-                array2[3, 2] = pz;
+                array2[0, 3] = px;
+                array2[1, 3] = py;
+                array2[2, 3] = pz;
                 array2[0, 0] = r11;
                 array2[0, 1] = r12;
                 array2[0, 2] = r13;
@@ -230,11 +231,13 @@ namespace puma560
                 array2[2, 0] = r31;
                 array2[2, 1] = r32;
                 array2[2, 2] = r33;
+            
             }
         }
 
 
-        public double Schet(double t1, double t2, double t3, double t4, double t5, double t6, double a2, double a3, double d3, double d4, out double r12, out double r13, out double px, out double r21, out double r22, out double r23, out double py, out double r31, out double r32, out double r33, out double pz)
+        public double Schet(double t1, double t2, double t3, double t4, double t5, double t6, double a2, double a3, double d3, double d4,
+            out double r12, out double r13, out double px, out double r21, out double r22, out double r23, out double py, out double r31, out double r32, out double r33, out double pz)
         {
             double c1 = Math.Cos(t1 * Math.PI / 180);
             double c2 = Math.Cos(t2 * Math.PI / 180);
@@ -269,7 +272,7 @@ namespace puma560
             return (r11);
         }
 
-        public double inverse(double d3, double a2, double d4, double a3, double px, double py, double pz, out double tau3v2)
+        public double inverse(double r11, double r13, double r21, double r31, double r23, double r33, double d3, double a2, double d4, double a3, double px, double py, double pz, out double tau3v2)
         {
             Program program = new Program();
             double tau1v1;
@@ -280,8 +283,42 @@ namespace puma560
             double tau2v2 = program.tau2(px, py, pz, a2, a3, d3, d4, tau1v1, tau3v2);
             double tau2v3 = program.tau2(px, py, pz, a2, a3, d3, d4, tau1v2, tau3v1);
             double tau2v4 = program.tau2(px, py, pz, a2, a3, d3, d4, tau1v2, tau3v2);
-            //    double tau4v1 = program.tau4(r13, r23, r33, a2, a3, a4, d4, px, py, pz, tau1v1, tau3v1);
-            // double tau23 = Math.Atan2((-a3-a2*Math.Cos))
+            double tau4v1 = program.tau4(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1);
+            double tau4v2 = program.tau4(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2);
+            double tau4v3 = program.tau4(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1);
+            double tau4v4 = program.tau4(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2);
+            //double tau5v1 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v1);
+            //double tau5v2 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v2);
+            //double tau5v3 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v3);
+            //double tau5v4 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v4);
+            //double tau5v5 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v1);
+            //double tau5v6 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v2);
+            //double tau5v7 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v3);
+            //double tau5v8 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v4);
+            //double tau5v9 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v1);
+            //double tau5v10 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v2);
+            //double tau5v11 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v3);
+            //double tau5v12 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v4);
+            //double tau5v13 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v1);
+            //double tau5v14 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v2);
+            //double tau5v15 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v3);
+            //double tau5v16 = program.tau5(r13, r23, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v4);
+            //double tau6v1 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v1);
+            //double tau6v2 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v2);
+            //double tau6v3 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v3);
+            //double tau6v4 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v1, tau4v4);
+            //double tau6v5 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v1);
+            //double tau6v6 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v2);
+            //double tau6v7 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v3);
+            //double tau6v8 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v1, tau3v2, tau4v4);
+            //double tau6v9 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v1);
+            //double tau6v10 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v2);
+            //double tau6v11 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v3);
+            //double tau6v12 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v1, tau4v4);
+            //double tau6v13 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v1);
+            //double tau6v14 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v2);
+            //double tau6v15 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v3);
+            //double tau6v16 = program.tau6(r11, r13, r21, r23, r31, r33, a2, a3, d4, px, py, pz, tau1v2, tau3v2, tau4v4);
             Console.WriteLine("угол 1 вариант 1  " + tau1v1 * 57.3);
             Console.WriteLine("угол 1 вариант 2  " + tau1v2 * 57.3);
             Console.WriteLine("угол 2 вариант 1  " + tau2v1 * 57.3);
@@ -290,6 +327,42 @@ namespace puma560
             Console.WriteLine("угол 2 вариант 4  " + tau2v4 * 57.3);
             Console.WriteLine("угол 3 вариант 1  " + tau3v1 * 57.3);
             Console.WriteLine("угол 3 вариант 2  " + tau3v2 * 57.3);
+            Console.WriteLine("4 угол "+tau4v1 * 57.3);
+            Console.WriteLine("4 угол " + tau4v2 * 57.3);
+            Console.WriteLine("4 угол " + tau4v3 * 57.3);
+            Console.WriteLine("4 угол " + tau4v4 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v1 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v2 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v3 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v4 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v5 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v6 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v7 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v8 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v9 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v10 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v11 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v12 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v13 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v14 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v15 * 57.3);
+            //Console.WriteLine("5 угол" + tau5v16 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v1 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v2 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v3 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v4 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v5 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v6 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v7 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v8 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v9 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v10 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v11 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v12 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v13 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v14 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v15 * 57.3);
+            //Console.WriteLine("6 угол" + tau6v16 * 57.3);
             Console.ReadKey();
             return (tau3v1);
         }
@@ -325,51 +398,97 @@ namespace puma560
         }
         public double s23(double a2, double a3, double d4, double px, double py, double pz, double tau1, double tau3)
         {
-            double s23 = (((-1) * a3 - a2 * Math.Cos(tau3)) * pz + (Math.Cos(tau1) * px + Math.Sin(tau1) * py) * (a2 * Math.Sin(tau3) - d4)) / (Math.Pow(pz, 2) + Math.Pow(Math.Cos(tau1) * px + Math.Sin(tau1) * py, 2));
-            return (s23);
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c3 = Math.Cos(tau3);
+            double s3 = Math.Sin(tau3);
+            double s23 = (((-1) * a3 - a2 * c3) * pz + (c1 * px + s1 * py) * (a2 * s3 - d4)) /
+                (pz*pz + ((c1 * px + s1 * py)* (c1 * px + s1 * py)));
+                return (s23);
         }
         public double c23(double a2, double tau1, double a3, double tau3, double d4, double px, double py, double pz)
         {
-            double c23 = (a2 * Math.Sin(tau3) - d4) * pz - (a3 + a2 * Math.Cos(tau3)) * (Math.Cos(tau1) * px + Math.Sin(tau1) * py)
-                / (Math.Pow(pz, 2) + Math.Pow(Math.Cos(tau1) * px + Math.Sin(tau1) * py, 2));
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c3 = Math.Cos(tau3);
+            double s3 = Math.Sin(tau3);
+            double c23 = ((a2 * s3 - d4) * pz - (a3 + a2 * c3) * (c1 * px + s1 * py)) /
+                (pz*pz + ((c1 * px + s1 * py)* (c1 * px + s1 * py)));
             return (c23);
         }
-        public double tau4(double r13, double r23, double r33, double a2, double a3, double a4, double d4, double px, double py, double pz, double tau1, double tau3)
+        public double tau4(double r13, double r23, double r33, double a2, double a3, double d4, double px, double py, double pz, double tau1, double tau3)
         {
             Program program = new Program();
             double c23 = program.c23(a2, tau1, a3, tau3, d4, px, py, pz);
             double c1 = Math.Cos(tau1);
             double s1 = Math.Cos(tau1);
-            double s23 = program.s23(a2, a3, d4, px, py, pz, tau1, tau3);
-            double tau4 = Math.Atan2(-r13 * s1 + r23 * c1, (-1) * r13 * s1 * c23 - r23 * s1 * c23 + r33 * s23);
+            double s23 = program.s23(a2,a3,d4,px,py,pz,tau1,tau3);
+            double tau4 = Math.Atan2((-1)*r13 * s1 + r23 * c1, (-1) * r13 * c1 * c23 - r23 * s1 * c23 + r33 * s23);
             return tau4;
         }
-
-        //public double tau4 (double px, double py, double pz, double a2, double a3, double d3, double d4)
-        //{
-        //    double c23 =
-        //}
-        //public double tau5
-        //{
-
-        //}
-        //public double tau6
-        //{
-
-        //}
+        public double tau5(double r13, double r23, double r33, double a2, double a3, double d4, double px, double py, double pz, double tau1, double tau3, double tau4)
+        {
+            Program program = new Program();
+            double s5 = program.s5(tau1, tau3, tau4, r13, r23, r33, a2, a3, d4, px, py, pz);
+            double c5 = program.c5(tau1, tau3, tau4, r13, r23, r33, a2, a3, d4, px, py, pz);
+            double tau5 = Math.Atan2(s5, c5);
+            return tau5;
+        }
+        public double s5(double r13, double r23, double r33, double a2, double a3, double d4, double px, double py, double pz, double tau1, double tau3, double tau4)
+        {
+            Program program = new Program();
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c4 = Math.Cos(tau4);
+            double s4 = Math.Sin(tau4);
+            double c23 = program.c23(a2, tau1, a3, tau3, d4, px, py, pz);
+            double s23 = program.s23(a2, a3, d4, px, py, pz, tau1, tau3);
+            double s5 = (-1) * (r13 * (c1 * c23 * c4 + s1 * s4) + r23 * (s1 * c23 * c4 - c1 * s4) - r33 * (s23 * c4));
+            return s5;
+        }
+        public double c5(double tau1, double tau3, double tau4, double r13, double r23, double r33, double a2, double a3, double d4, double px, double py, double pz)
+        {
+            Program program = new Program();
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c23 = program.c23(a2, tau1, a3, tau3, d4, px, py, pz);
+            double s23 = program.s23(a2, a3, d4, px, py, pz, tau1, tau3);
+            double c5 = r13 * ((-1) * c1 * s23) + r23 * ((-1) * s1 * s23) + r33 * ((-1) * c23);
+            return c5;
+        }
+        public double tau6(double r11, double r13, double r21, double r23, double r31, double r33, double a2, double a3, double d4, double px, double py, double pz, double tau1, double tau3, double tau4)
+        {
+            Program program = new Program();
+            double s6 = program.s6(tau1, tau3, tau4, r11, r21, r31, a2, a3, d4, px, py, pz);
+            double c6 = program.c6(tau1, tau3, tau4, r13, r23, r33, r11, r21, r31, a2, a3, d4, px, py, pz);
+            double tau6 = Math.Atan2(s6, c6);
+            return tau6;
+        }
+        public double s6(double tau1, double tau3, double tau4, double r11, double r21, double r31, double a2, double a3, double d4, double px, double py, double pz)
+        {
+            Program program = new Program();
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c4 = Math.Cos(tau4);
+            double s4 = Math.Sin(tau4);
+            double c23 = program.c23(a2, tau1, a3, tau3, d4, px, py, pz);
+            double s23 = program.s23(a2, a3, d4, px, py, pz, tau1, tau3);
+            double s6 = (-1) * r11 * (c1 * c23 * s4 - s1 * c4) - r21 * (s1 * c23 * s4 + c1 * c4) + r31 * (s23 * s4);
+            return s6;
+        }
+        public double c6(double tau1, double tau3, double tau4, double r13, double r23, double r33, double r11, double r21, double r31, double a2, double a3, double d4, double px, double py, double pz)
+        {
+            Program program = new Program();
+            double c1 = Math.Cos(tau1);
+            double s1 = Math.Sin(tau1);
+            double c4 = Math.Cos(tau4);
+            double s4 = Math.Sin(tau4);
+            double c5 = program.c5(tau1, tau3, tau4, r13, r23, r33, a2, a3, d4, px, py, pz);
+            double s5 = program.s5(tau1, tau3, tau4, r13, r23, r33, a2, a3, d4, px, py, pz);
+            double c23 = program.c23(a2, tau1, a3, tau3, d4, px, py, pz);
+            double s23 = program.s23(a2, a3, d4, px, py, pz, tau1, tau3);
+            double c6 = r11 * ((((c1 * c23 * c4) + s1 * s4) * c5) - (c1 * s23 * s5)) + r21 * ((s1 * c23 * c4 - c1 * s4) * c5 - s1 * s23 * s5) - r31 * (s23 * c4 * c5 + c23 * s5);
+            return c6;
+        }
     }
-    //   void class inverseKinematic
-    //    {
-    //        Program program = new Program();
-    //        double a2 = program.array1[2, 1];//записывание значений как не изменяющихся 
-    //        double a3 = program.array1[3, 1];
-    //        double d3 = program.array1[2, 2];
-
-    //        double px = program.array2[3, 0];
-    //        double py = program.array2[3, 1];
-    //        double pz = program.array2[3, 2];
-
-    //        public double D4 { get => d4; set => d4 = program.array1[3,2]; }
-    //    }
-    //}
 }
