@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\puma560\\puma560\\puma560.csproj",
+      "projectUniqueName": "F:\\puma560v2\\puma560\\puma560.csproj",
       "projectName": "puma560",
-      "projectPath": "F:\\puma560\\puma560\\puma560.csproj",
+      "projectPath": "F:\\puma560v2\\puma560\\puma560.csproj",
       "packagesPath": "C:\\Users\\Александр\\.nuget\\packages\\",
-      "outputPath": "F:\\puma560\\puma560\\obj\\",
+      "outputPath": "F:\\puma560v2\\puma560\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

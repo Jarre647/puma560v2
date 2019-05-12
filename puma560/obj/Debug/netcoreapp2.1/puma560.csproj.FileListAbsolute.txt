@@ -1,0 +1,11 @@
+F:\puma560v2\puma560\bin\Debug\netcoreapp2.1\puma560.deps.json
+F:\puma560v2\puma560\bin\Debug\netcoreapp2.1\puma560.runtimeconfig.json
+F:\puma560v2\puma560\bin\Debug\netcoreapp2.1\puma560.runtimeconfig.dev.json
+F:\puma560v2\puma560\bin\Debug\netcoreapp2.1\puma560.dll
+F:\puma560v2\puma560\bin\Debug\netcoreapp2.1\puma560.pdb
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.csprojAssemblyReference.cache
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.csproj.CoreCompileInputs.cache
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.AssemblyInfoInputs.cache
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.AssemblyInfo.cs
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.dll
+F:\puma560v2\puma560\obj\Debug\netcoreapp2.1\puma560.pdb
